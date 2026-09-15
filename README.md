@@ -5,11 +5,9 @@
 - **Windows** : installez d'abord **WSL** (partie 1), puis **Conda** (partie 2).
 - **macOS / Linux** : passez directement à **Conda** (partie 2).
 
----
 
 # Partie 1 — Installation de WSL (Windows uniquement)
 
----
 
 ## Pourquoi WSL ?
 
@@ -17,8 +15,6 @@ Les outils de bio-informatique sont conçus pour **Linux**. Sur Windows, on inst
 
 Une fois WSL installé, vous aurez un terminal Linux prêt pour la formation.
 
-
----
 
 ## Avant de commencer — vérifier votre version de Windows
 
@@ -31,7 +27,6 @@ Pour vérifier :
 
 > Si votre Windows est plus ancien, faites d'abord les **mises à jour Windows** (Paramètres → Windows Update → Rechercher des mises à jour), puis revenez à ce guide.
 
----
 
 ## Installation (la méthode simple)
 
@@ -67,7 +62,6 @@ Après le redémarrage, une fenêtre **Ubuntu** s'ouvre automatiquement et finit
 
 > **Important** — Quand vous tapez le mot de passe, **rien ne s'affiche à l'écran** (pas d'étoiles, pas de points). C'est normal, c'est une sécurité Linux. Tapez votre mot de passe et appuyez sur Entrée. Notez-le, il vous servira.
 
----
 
 ## Vérifier que tout fonctionne
 
@@ -95,7 +89,6 @@ pwd
 
 Si une ligne comme `/home/votre_nom` s'affiche, **tout fonctionne** — vous êtes prêt(e) pour la formation.
 
----
 
 ## En cas de problème
 
@@ -115,7 +108,6 @@ Si vous ne pouvez pas exécuter PowerShell en administrateur (ordinateur d'un h�
 Pour tout problème, la référence complète (en anglais, avec dépannage détaillé) :
 <https://learn.microsoft.com/en-us/windows/wsl/install>
 
----
 
 ## Checklist finale WSL
 
@@ -130,7 +122,6 @@ Avant la formation, vérifiez que :
 
 Si toutes les cases sont cochées, votre WSL est prêt. Passez à l'installation de Conda ci-dessous.
 
----
 
 # Partie 2 — Installation de Conda (tous les systèmes)
 
@@ -142,8 +133,6 @@ Cette partie concerne **tout le monde** : Windows (dans le terminal Ubuntu/WSL),
 > - **Windows** : dans le terminal **Ubuntu** (celui de WSL), pas dans PowerShell.
 > - **macOS** : dans le **Terminal** (Spotlight ⌘+Espace → « Terminal »).
 > - **Linux** : dans votre **terminal** (Ctrl+Alt+T).
-
----
 
 ## Étape 1 — Télécharger l'installateur Miniforge
 
@@ -169,7 +158,6 @@ curl -L "https://github.com/conda-forge/miniforge/releases/latest/download/Minif
 
 > **Quelle puce ai-je sur mon Mac ?** Menu  (en haut à gauche) → « À propos de ce Mac ». Si vous lisez « Puce Apple », prenez la version arm64. Si vous lisez « Processeur Intel », prenez la version Intel (x86_64).
 
----
 
 ## Étape 2 — Lancer l'installation
 
@@ -182,13 +170,11 @@ Déroulez l'installation :
 - acceptez l'emplacement proposé par défaut (appuyez sur Entrée) ;
 - à la question finale (« initialize Miniforge3? »), tapez **`yes`**.
 
----
 
 ## Étape 3 — Activer Conda
 
 Fermez complètement le terminal, puis **rouvrez-le**. Vous devez maintenant voir `(base)` au début de la ligne — cela signifie que Conda est actif.
 
----
 
 ## Étape 4 — Vérifier
 
@@ -206,7 +192,7 @@ Deux numéros de version doivent s'afficher (par exemple `conda 24.11.0` et `2.0
 > ```
 > puis rouvrez le terminal.
 
----
+
 
 ## Étape 5 — Configurer les canaux
 
@@ -218,7 +204,6 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
----
 
 ## Checklist finale Conda
 
@@ -229,6 +214,5 @@ conda config --set channel_priority strict
 - [ ] Les canaux `conda-forge` et `bioconda` sont configurés
 
 
----
 
 
