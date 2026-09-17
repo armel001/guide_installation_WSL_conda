@@ -1,20 +1,19 @@
-# Guide d'installation — WSL & Conda
+# Guide d'installation — WSL, Conda & Environnements
 
 **Formation FEF · Afroscreen — Bio-informatique**
 
-- **Windows** : installez d'abord **WSL** (partie 1), puis **Conda** (partie 2).
-- **macOS / Linux** : passez directement à **Conda** (partie 2).
+- **Windows** : faites la **partie 1** (WSL), puis la **partie 2** (Conda), puis la **partie 3** (environnements).
+- **macOS / Linux** : passez directement à la **partie 2** (Conda), puis la **partie 3**.
 
+---
 
 # Partie 1 — Installation de WSL (Windows uniquement)
-
 
 ## Pourquoi WSL ?
 
 Les outils de bio-informatique sont conçus pour **Linux**. Sur Windows, on installe **WSL** (*Windows Subsystem for Linux*), qui fait tourner un vrai **Ubuntu (Linux)** à l'intérieur de Windows — sans supprimer Windows, sans machine virtuelle compliquée.
 
 Une fois WSL installé, vous aurez un terminal Linux prêt pour la formation.
-
 
 ## Avant de commencer — vérifier votre version de Windows
 
@@ -26,7 +25,6 @@ Pour vérifier :
 3. Une fenêtre affiche votre version.
 
 > Si votre Windows est plus ancien, faites d'abord les **mises à jour Windows** (Paramètres → Windows Update → Rechercher des mises à jour), puis revenez à ce guide.
-
 
 ## Installation (la méthode simple)
 
@@ -51,7 +49,7 @@ Cette commande active automatiquement tout ce qui est nécessaire et installe **
 
 ### Étape 3 — Redémarrer
 
-Quand l'installation le demande, **redémarrez votre ordinateur**. C'est indispensable.
+Quand l'installation le demande, **redémarrez votre ordinateur**. C'est **indispensable** — l'installation ne se termine qu'après le redémarrage.
 
 ### Étape 4 — Configurer Ubuntu (au redémarrage)
 
@@ -61,7 +59,6 @@ Après le redémarrage, une fenêtre **Ubuntu** s'ouvre automatiquement et finit
 - un **mot de passe**.
 
 > **Important** — Quand vous tapez le mot de passe, **rien ne s'affiche à l'écran** (pas d'étoiles, pas de points). C'est normal, c'est une sécurité Linux. Tapez votre mot de passe et appuyez sur Entrée. Notez-le, il vous servira.
-
 
 ## Vérifier que tout fonctionne
 
@@ -87,31 +84,56 @@ Dans le terminal **Ubuntu**, tapez :
 pwd
 ```
 
-Si une ligne comme `/home/votre_nom` s'affiche, **tout fonctionne** — vous êtes prêt(e) pour la formation.
-
+Si une ligne comme `/home/votre_nom` s'affiche, **tout fonctionne** — passez à la partie 2.
 
 ## En cas de problème
 
-### « wsl --install » ne fonctionne pas / erreur
+### Cas A — « La virtualisation n'est pas activée sur cet ordinateur »
 
-La cause la plus fréquente est la **virtualisation désactivée** dans le BIOS/UEFI de l'ordinateur, ou un **Windows pas à jour**.
+Message typique : *« WSL2 ne peut pas démarrer, car la virtualisation n'est pas activée »* ou code d'erreur `HCS_E_HYPERV_NOT_INSTALLED`.
 
-- **Mettre Windows à jour** : Paramètres → Windows Update → Rechercher des mises à jour. Puis réessayer.
-- **Activer la virtualisation** : elle se trouve dans les réglages du BIOS/UEFI (à l'allumage de l'ordinateur, souvent touche `F2`, `F10`, `Suppr` ou `Échap` selon la marque), sous un nom comme *Virtualization Technology*, *Intel VT-x*, *AMD-V* ou *SVM Mode*. Activez-la, enregistrez, redémarrez.
+La **virtualisation** est désactivée au niveau matériel. Il faut l'activer dans le **BIOS/UEFI** :
 
-### « Ordinateur d'institution » sans droits administrateur
+1. **Redémarrez** l'ordinateur.
+2. Dès l'allumage, appuyez plusieurs fois sur la **touche du BIOS** (selon la marque) :
+   - **HP** : `F10` (ou `Échap` puis `F10`)
+   - **Dell** : `F2`
+   - **Lenovo** : `F1` ou `F2`
+   - **Asus / Acer** : `F2` ou `Suppr`
+   - **Autre** : souvent `F2`, `F10`, `Suppr` ou `Échap`
+3. Cherchez l'onglet **Security**, **Advanced** ou **System Configuration**.
+4. Trouvez une ligne du type **Virtualization Technology**, **Intel VT-x**, **AMD-V** ou **SVM Mode**.
+5. Mettez-la sur **Enabled** (activé). Si présente, activez aussi **VT-d** / **Virtualization for Directed I/O**.
+6. Appuyez sur **F10** pour **Save and Exit** (enregistrer et quitter), confirmez.
+7. Une fois Windows redémarré, réessayez dans PowerShell admin : `wsl --install`.
 
-Si vous ne pouvez pas exécuter PowerShell en administrateur (ordinateur d'un hôpital, d'un labo…), contactez votre **service informatique** pour qu'il installe WSL, ou **prévenez un encadrant** dès votre arrivée à la formation : un rattrapage est prévu, mais il prend du temps.
+Aide Microsoft (selon les marques) : <https://aka.ms/enablevirtualization>
+
+### Cas B — « L'opération a réussi… le système doit être réamorcé »
+
+Ce n'est **pas une erreur** : les composants se sont installés correctement. Il suffit de **redémarrer l'ordinateur**, puis Ubuntu finira son installation.
+
+### Cas C — « wsl : terme non reconnu »
+
+WSL n'est pas encore disponible. Dans PowerShell admin :
+
+```powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+Puis **redémarrez** et réessayez `wsl --install`.
+
+### Cas D — Ordinateur d'institution sans droits administrateur
+
+Si vous ne pouvez pas exécuter PowerShell en administrateur (ordinateur d'un hôpital, d'un labo…), contactez votre **service informatique**, ou **prévenez un encadrant** dès votre arrivée : un rattrapage est prévu, mais il prend du temps.
 
 ### Guide officiel Microsoft
 
-Pour tout problème, la référence complète (en anglais, avec dépannage détaillé) :
+Référence complète (en anglais, avec dépannage détaillé) :
 <https://learn.microsoft.com/en-us/windows/wsl/install>
 
-
 ## Checklist finale WSL
-
-Avant la formation, vérifiez que :
 
 - [ ] `winver` indique Windows 10 (2004+) ou Windows 11
 - [ ] `wsl --install` a été exécuté en PowerShell administrateur
@@ -120,18 +142,19 @@ Avant la formation, vérifiez que :
 - [ ] `wsl --list --verbose` affiche Ubuntu en VERSION **2**
 - [ ] La commande `pwd` fonctionne dans Ubuntu
 
-Si toutes les cases sont cochées, votre WSL est prêt. Passez à l'installation de Conda ci-dessous.
+Si toutes les cases sont cochées, votre WSL est prêt. Passez à la partie 2 (Conda).
 
+---
 
 # Partie 2 — Installation de Conda (tous les systèmes)
 
 Cette partie concerne **tout le monde** : Windows (dans le terminal Ubuntu/WSL), macOS et Linux.
 
-**Conda** est l'outil qui installe proprement les logiciels de bio-informatique et gère leurs dépendances. On installe **Miniforge**, une version légère et gratuite de Conda, préconfigurée pour la science.
+**Conda** installe proprement les logiciels de bio-informatique et gère leurs dépendances. On installe **Miniforge**, une version légère et gratuite de Conda, préconfigurée pour la science.
 
 > **Où taper ces commandes ?**
 > - **Windows** : dans le terminal **Ubuntu** (celui de WSL), pas dans PowerShell.
-> - **macOS** : dans le **Terminal** (Spotlight ⌘+Espace → « Terminal »).
+> - **macOS** : dans le **Terminal** (Spotlight Cmd+Espace → « Terminal »).
 > - **Linux** : dans votre **terminal** (Ctrl+Alt+T).
 
 ## Étape 1 — Télécharger l'installateur Miniforge
@@ -156,8 +179,7 @@ curl -L "https://github.com/conda-forge/miniforge/releases/latest/download/Minif
 curl -L "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh" -o miniforge.sh
 ```
 
-> **Quelle puce ai-je sur mon Mac ?** Menu  (en haut à gauche) → « À propos de ce Mac ». Si vous lisez « Puce Apple », prenez la version arm64. Si vous lisez « Processeur Intel », prenez la version Intel (x86_64).
-
+> **Quelle puce ai-je sur mon Mac ?** Menu Pomme (en haut à gauche) → « À propos de ce Mac ». « Puce Apple » → arm64. « Processeur Intel » → x86_64.
 
 ## Étape 2 — Lancer l'installation
 
@@ -170,11 +192,9 @@ Déroulez l'installation :
 - acceptez l'emplacement proposé par défaut (appuyez sur Entrée) ;
 - à la question finale (« initialize Miniforge3? »), tapez **`yes`**.
 
-
 ## Étape 3 — Activer Conda
 
-Fermez complètement le terminal, puis **rouvrez-le**. Vous devez maintenant voir `(base)` au début de la ligne — cela signifie que Conda est actif.
-
+Fermez complètement le terminal, puis **rouvrez-le**. Vous devez voir `(base)` au début de la ligne — Conda est actif.
 
 ## Étape 4 — Vérifier
 
@@ -183,20 +203,16 @@ conda --version
 mamba --version
 ```
 
-Deux numéros de version doivent s'afficher (par exemple `conda 24.11.0` et `2.0.5`). Les numéros exacts peuvent différer — l'important est qu'**aucune erreur** n'apparaisse.
+Deux numéros de version doivent s'afficher (ex. `conda 24.11.0` et `2.0.5`). L'important est qu'**aucune erreur** n'apparaisse.
 
-> **Si « command not found »** — Fermez complètement le terminal et rouvrez-le. Si le problème persiste, tapez :
+> **Si « command not found »** — Fermez complètement le terminal et rouvrez-le. Si le problème persiste :
 > ```bash
 > source ~/miniforge3/etc/profile.d/conda.sh
 > conda init
 > ```
 > puis rouvrez le terminal.
 
-
-
 ## Étape 5 — Configurer les canaux
-
-Les « canaux » sont les dépôts d'où Conda télécharge les logiciels. On les configure une seule fois :
 
 ```bash
 conda config --add channels bioconda
@@ -204,15 +220,74 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-
 ## Checklist finale Conda
 
-- [ ] L'installateur Miniforge a été téléchargé (bon système : Linux / macOS arm64 / macOS Intel)
+- [ ] L'installateur Miniforge a été téléchargé (bon système)
 - [ ] `bash miniforge.sh` s'est terminé sans erreur
 - [ ] Le terminal affiche `(base)` au début de la ligne
 - [ ] `conda --version` et `mamba --version` affichent un numéro
 - [ ] Les canaux `conda-forge` et `bioconda` sont configurés
 
+Si toutes les cases sont cochées, passez à la partie 3.
+
+---
+
+# Partie 3 — Installer les environnements des pratiques
+
+Cette étape prépare **à l'avance** tous les outils des séances pratiques. Elle télécharge beaucoup de paquets : **nécessite une bonne connexion**.
+
+Deux environnements à installer : **`sc2_analyse`** (cas SARS-CoV-2) et **`mpox_analyse`** (cas MPOX).
+
+## Étape 1 — Créer un dossier de travail
+
+```bash
+mkdir -p ~/bioinfo_practice
+cd ~/bioinfo_practice
+```
+
+## Étape 2 — Télécharger les fichiers d'environnement
+
+Les fichiers `environment.yml` décrivent les outils à installer. Téléchargez-les :
+
+```bash
+# Environnement SARS-CoV-2
+wget "LIEN_A_REMPLACER_sc2_environment.yml" -O sc2_environment.yml
+
+# Environnement MPOX
+wget "LIEN_A_REMPLACER_mpox_environment.yml" -O mpox_environment.yml
+```
+
+## Étape 3 — Créer les environnements
+
+Une commande par environnement. **Chacune est longue** (téléchargement de nombreux outils) — c'est normal, laissez faire jusqu'au bout.
+
+```bash
+mamba env create -f sc2_environment.yml
+```
+
+```bash
+mamba env create -f mpox_environment.yml
+```
+
+> **Patience** — Selon la connexion, chaque environnement peut prendre 10 à 30 minutes. Ne fermez pas le terminal pendant l'installation.
+
+## Étape 4 — Vérifier les environnements
+
+```bash
+conda env list
+```
+
+Vous devez voir apparaître **`sc2_analyse`** et **`mpox_analyse`** dans la liste (en plus de `base`).
 
 
+## Checklist finale Environnements
 
+- [ ] Les deux fichiers `.yml` ont été téléchargés
+- [ ] `mamba env create -f sc2_environment.yml` s'est terminé sans erreur
+- [ ] `mamba env create -f mpox_environment.yml` s'est terminé sans erreur
+- [ ] `conda env list` montre `sc2_analyse` et `mpox_analyse`
+- [ ] Les deux environnements s'activent sans erreur
+
+**Si toutes les cases sont cochées, vous êtes totalement prêt(e) pour la pratique.**
+
+---
