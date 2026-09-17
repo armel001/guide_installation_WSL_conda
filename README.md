@@ -251,10 +251,11 @@ Les fichiers `environment.yml` décrivent les outils à installer. Téléchargez
 
 ```bash
 # Environnement SARS-CoV-2
-wget "https://github.com/armel001/guide_installation_WSL_conda/blob/main/sc2_environment.yml" -O sc2_environment.yml
+wget "https://raw.githubusercontent.com/armel001/guide_installation_WSL_conda/main/sc2_environment.yml" -O sc2_environment.yml
+
 
 # Environnement MPOX
-wget "https://github.com/armel001/guide_installation_WSL_conda/blob/main/mpox_environment.yml" -O mpox_environment.yml
+wget "https://raw.githubusercontent.com/armel001/guide_installation_WSL_conda/main/mpox_environment.yml" -O mpox_environment.yml
 ```
 
 ## Étape 3 — Créer les environnements
